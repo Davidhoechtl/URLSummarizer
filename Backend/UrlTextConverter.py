@@ -21,8 +21,9 @@ def extract_text_from_url(url):
         soup = BeautifulSoup(html, 'html.parser')
 
         # remove tags where no meaningful text is expected
-        for tag in soup(['header', 'footer', 'nav']):
+        for tag in soup( ['header', 'footer', 'nav', 'script', 'style', 'noscript', 'aside', 'form', 'button', 'input', 'svg', 'canvas']):
             tag.decompose()
+
         # Extract visible text
         text = ' '.join(soup.stripped_strings)
         # Optional: Clean up whitespace
