@@ -16,7 +16,11 @@ def extract_text_from_url(url):
         context = browser.new_context()
         page = context.new_page()
 
-        page.goto(url, wait_until="networkidle")
+        try:
+            page.goto(url, wait_until="networkidle")
+        except:
+            page.goto(url)
+
         html = page.content()
         soup = BeautifulSoup(html, 'html.parser')
 
