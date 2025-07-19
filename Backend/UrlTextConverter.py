@@ -19,6 +19,7 @@ def extract_text_from_url(url):
         try:
             page.goto(url, wait_until="networkidle")
         except:
+            print("failed loading with wait for networkidle")
             page.goto(url)
 
         html = page.content()
