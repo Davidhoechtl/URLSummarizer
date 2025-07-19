@@ -22,6 +22,9 @@ def extract_text_from_url(url):
             print("failed loading with wait for networkidle")
             page.goto(url)
 
+        # try to dismiss cookie banner
+        dismiss_cookie_banners(page)
+
         html = page.content()
         soup = BeautifulSoup(html, 'html.parser')
 
@@ -37,6 +40,37 @@ def extract_text_from_url(url):
         browser.close()
 
         return text
+
+def dismiss_cookie_banners(page):
+    """
+    Tries to find and click cookie banners that ask for consent.
+    This uses common patterns to identify and click accept buttons.
+    """
+    cookie_selectors = [
+        'button:has-text("Accept")',
+        'button:has-text("I Agree")',
+        'button:has-text("I agree")',
+        'button:has-text("Agree")',
+        'button:has-text("Got it")',
+        'button:has-text("OK")',
+        '[id*="cookie"] >> text=Accept',
+        '[class*="cookie"] >> text=Accept',
+        '[class*="consent"] >> text=Accept',
+        '[aria-label*="cookie"] >> text=Accept'
+    ]
+
+    for selector in cookie_selectors:
+        try:
+            button = page.locator(selector).first
+            if button.is_visible():
+                print(f"Trying cookie dismiss selector: {selector}")
+                # Use force=True to bypass visibility issues, and short timeout to avoid freezing
+                button.click(timeout=2000, force=True)
+                page.wait_for_timeout(1000)
+                break
+        except Exception as e:
+            print(f"Failed to click selector: {selector} | Reason: {e}")
+            continue
 
 # Tutorial Code:
 
