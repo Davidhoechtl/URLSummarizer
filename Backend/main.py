@@ -1,4 +1,4 @@
-import UrlSummaryPipeline
+from Pipeline import UrlSummaryPipeline
 
 URL = "https://www.handelsblatt.com/finanzen/maerkte/marktberichte/dax-aktuell-dax-legt-auf-ueber-24500-punkte-zu-und-baut-rekord-aus/100140427.html"
 #URL = "https://en.wikipedia.org/wiki/Angela_Merkel"
